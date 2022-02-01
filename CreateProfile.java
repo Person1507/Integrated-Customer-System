@@ -7,7 +7,10 @@ public class CreateProfile extends JFrame {
     private JFrame f;
 
     public CreateProfile(CustomerProfDB database) {  
+        //create frame
         f = new JFrame();
+
+        // create title, labels for inputs, and input boxes themselves
         JLabel title = new JLabel("Create Profile");
         title.setBounds(100, 0, 200, 60);
 
@@ -50,6 +53,7 @@ public class CreateProfile extends JFrame {
         JLabel use = new JLabel("Use:");
         use.setBounds(10, 200, 100, 30);
 
+        // JComboBox = dropdown
         String[] uses = {"Personal", "Business"};
         JComboBox useMenu = new JComboBox(uses);
         useMenu.setBounds(90, 200, 200, 30);
@@ -87,24 +91,32 @@ public class CreateProfile extends JFrame {
         JComboBox methodMenu = new JComboBox(methods);
         methodMenu.setBounds(90, 325, 200, 30);
 
+        // submit button
         JButton submit = new JButton("Submit");
         submit.setBounds(100, 375, 100, 50);
 
+        // actionlistener for submit button
         submit.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae){
+                // create VehicleInfo object and pass in attributes
                 VehicleInfo vi = new VehicleInfo(m.getText(), yr.getText(), (String)typeMenu.getSelectedItem(), (String)methodMenu.getSelectedItem());
+                // error handling if invalid input for income (accepts float)
+                // if input is valid
                 try{
                     float i = Float.parseFloat(inc.getText());
+                    // create CustomerProf object and pass in attributes
                     CustomerProf cp = new CustomerProf(aID.getText(), fName.getText(), lName.getText(), addr.getText(), pn.getText(), i, (String)statusMenu.getSelectedItem(), (String)useMenu.getSelectedItem(), vi);
                     database.insertNewProfile(cp);
                     f.setVisible(false);
                 }
+                // if input is invalid
                 catch (Exception e){
                     JOptionPane.showMessageDialog(null, "Please do not enter any non-numerical characters in the income field.");
                 }
             }
         });
 
+        // add components to frame
         f.add(title);
         f.add(adminID);
         f.add(aID);
@@ -132,17 +144,10 @@ public class CreateProfile extends JFrame {
         f.add(methodMenu);
         f.add(submit);
 
+        // set size, layout, visibility
         f.setSize(300, 500);
         f.setLayout(null);  
         f.setVisible(true);
-        //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
     }
-    
-    /*
-    public static void main(String[] args) {  
-        CustomerProfDB database = new CustomerProfDB("test.txt");
-        new CreateProfile(database);  
-    }
-    */  
 }
